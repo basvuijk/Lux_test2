@@ -287,11 +287,9 @@ class BrightnessService : Service(), SensorEventListener {
     }
 
     private fun acquireCpuLock() {
-        var lock = cpuLock
-        if (lock == null) {
-            lock = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "luxcurve:proximity")
-            cpuLock = lock
-        }
+        val lock: PowerManager.WakeLock = cpuLock
+            ?: power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "luxcurve:proximity")
+        cpuLock = lock
         if (!lock.isHeld) lock.acquire()
     }
 
